@@ -14,6 +14,13 @@ How
 ===
 You can extend and use channel for sending messages. Or you can simply send messages from automated actions.
 
+========
+Install
+========
+
+Use this link to craete bot account in discord: https://discordpy.readthedocs.io/en/latest/discord.html#discord-intro
+
+===================
 Further information
 ===================
 
