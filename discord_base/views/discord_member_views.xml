@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="discord_member_tree_view" model="ir.ui.view">
+        <field name="name">discord.member.tree</field>
+        <field name="model">discord.member</field>
+        <field name="arch" type="xml">
+            <tree string="Discord Members" create="false" edit="false" delete="false">
+                <field name="active" invisible="1"/>
+                <field name="display_name"/>
+                <field name="name"/>
+                <field name="discriminator"/>
+                <field name="mention"/>
+                <field name="discord_id"/>
+                <field name="guild_id"/>
+                <field name="create_date" string="Date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="discord_member_form_view" model="ir.ui.view">
+        <field name="name">discord.member.form</field>
+        <field name="model">discord.member</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <form string="Discord Member" create="false" edit="false">
+                <sheet> 
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <field name="id" invisible="True"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="group_info">
+                            <field name="name" readonly="1"/>
+                            <field name="mention"/>
+                        </group>
+                        <group name="group_discord">
+                            <field name="discriminator"/>
+                            <field name="discord_id"/>
+                            <field name="guild_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="discord_member_search_view" model="ir.ui.view">
+        <field name="name">discord.member.search</field>
+        <field name="model">discord.member</field>
+        <field name="arch" type="xml">
+            <search string="Discord Member">
+                <field name="name" string="Name" filter_domain="['|', '|', '|', ('name', 'ilike', self), ('display_name', 'ilike', self), ('mention', 'ilike', self), ('discord_id', 'ilike', self)]"/>
+                <field name="guild_id"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="guild" string="Guild" domain="[]" context="{'group_by':'guild_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="discord_member_action" model="ir.actions.act_window">
+        <field name="name">Discord Member</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">discord.member</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="discord_member_tree_view"/>
+        <field name="search_view_id" ref="discord_member_search_view"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Sync guild to get members
+            </p><p>
+                Once the members are created, you can use members with other modules.
+            </p>
+        </field>
+    </record>
+</odoo>

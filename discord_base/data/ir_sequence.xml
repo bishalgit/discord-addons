@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_discord_message" model="ir.sequence">
+            <field name="name">Discord Message</field>
+            <field name="code">discord.message</field>
+            <field name="prefix">DSC</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

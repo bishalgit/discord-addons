@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="discord_message_tree_view" model="ir.ui.view">
+        <field name="name">discord.message.tree</field>
+        <field name="model">discord.message</field>
+        <field name="arch" type="xml">
+            <tree string="Discord Messages" decoration-danger="sent==False">
+                <field name="sent" invisible="1"/>
+                <field name="name"/>
+                <field name="create_date" string="Date"/>
+                <field name="guild_id"/>
+                <field name="channel_id"/>
+                <field name="member_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="discord_message_form_view" model="ir.ui.view">
+        <field name="name">discord.message.form</field>
+        <field name="model">discord.message</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <form string="Discord Message">
+                <header>
+                    <button name="send" id="send_notification"
+                        string="Send Message" class="btn-primary" type="object"
+                        attrs="{'invisible': [('sent', '=', True)]}"/>
+                </header>
+                <sheet>                    
+                    <field name="id" invisible="True"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <div name="options" groups="base.group_user">
+                            <div>
+                                <field name="sent"/>
+                                <label for="sent"/>
+                            </div>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Content" name="notification_content">
+                            <group>
+                                <group name="group_content">
+                                    <field name="content"/>
+                                    <field name="message_id"/>
+                                </group>
+                                <group name="group_info">                        
+                                    <field name="guild_id" options="{'no_create': True}"/>
+                                    <field name="channel_id" options="{'no_create': True}"/>
+                                    <field name="member_id" options="{'no_create': True}"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="discord_message_search_view" model="ir.ui.view">
+        <field name="name">discord.message.search</field>
+        <field name="model">discord.message</field>
+        <field name="arch" type="xml">
+            <search string="Push Notification">
+                <field name="name" string="Name" filter_domain="['|', ('message_id', 'ilike', self),('name', 'ilike', self)]"/>
+                <field name="guild_id"/>
+                <field name="channel_id"/>
+                <field name="member_id"/>
+                <separator/>
+                <filter string="Sent" name="filter_sent" domain="[('sent','=',True)]"/>
+                <filter string="Not Sent" name="filter_not_sent" domain="[('sent','=',False)]"/>
+                <separator/>
+                <filter string="Message Date" name="filter_notification_date" date="create_date"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Guild" name="guild" domain="[]" context="{'group_by':'guild_id'}"/>
+                    <filter string="Channel" name="channel" domain="[]" context="{'group_by':'channel_id'}"/>
+                    <filter string="Member" name="member" domain="[]" context="{'group_by':'member_id'}"/>
+                    <filter name="sent" string="Status" domain="[]" context="{'group_by':'sent'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="discord_message_action" model="ir.actions.act_window">
+        <field name="name">Discord Notification</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">discord.message</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="discord_message_tree_view"/>
+        <field name="search_view_id" ref="discord_message_search_view"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new message
+            </p><p>
+                Once the message is created, you can send it.
+            </p>
+        </field>
+    </record>
+</odoo>

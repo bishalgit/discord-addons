@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_discord_guild,discord.guild,model_discord_guild,discord_base.group_discord_user,1,0,0,0
+access_discord_guild_manager,discord.guild.manager,model_discord_guild,discord_base.group_discord_manager,1,1,1,1
+access_discord_channel,discord.channel,model_discord_channel,discord_base.group_discord_user,1,0,0,0
+access_discord_channel_manager,discord.channel.manager,model_discord_channel,discord_base.group_discord_manager,1,1,1,1
+access_discord_channel_category,discord.channel.category,model_discord_channel_category,discord_base.group_discord_user,1,0,0,0
+access_discord_channel_category_manager,discord.channel.category.manager,model_discord_channel_category,discord_base.group_discord_manager,1,1,1,1
+access_discord_user,discord.user,model_discord_user,discord_base.group_discord_user,1,0,0,0
+access_discord_user_manager,discord.user.manager,model_discord_user,discord_base.group_discord_manager,1,1,1,1
+access_discord_member,discord.member,model_discord_member,discord_base.group_discord_user,1,0,0,0
+access_discord_member_manager,discord.member.manager,model_discord_member,discord_base.group_discord_manager,1,1,1,1
+access_discord_message,discord.message,model_discord_message,discord_base.group_discord_user,1,0,0,0
+access_discord_message_manager,discord.channel.message.manager,model_discord_message,discord_base.group_discord_manager,1,1,1,1

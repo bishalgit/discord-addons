@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="discord_channel_tree_view" model="ir.ui.view">
+        <field name="name">discord.channel.tree</field>
+        <field name="model">discord.channel</field>
+        <field name="arch" type="xml">
+            <tree string="Discord Channels" create="false" edit="false" delete="false">
+                <field name="active" invisible="1"/>
+                <field name="name"/>
+                <field name="mention"/>
+                <field name="position"/>
+                <field name="discord_id"/>
+                <field name="guild_id"/>
+                <field name="category_id"/>
+                <field name="create_date" string="Date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="discord_channel_form_view" model="ir.ui.view">
+        <field name="name">discord.channel.form</field>
+        <field name="model">discord.channel</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <form string="Discord Channel" create="false" edit="false">
+                <sheet> 
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <field name="id" invisible="True"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                            <field name="mention"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Discord Information" name="text_channels">
+                            <group>
+                                <group name="group_guild_info">
+                                    <field name="guild_id"/>
+                                    <field name="category_id"/>
+                                </group>
+                                <group name="group_discord_info">
+                                    <field name="position"/>
+                                    <field name="discord_id"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="discord_channel_search_view" model="ir.ui.view">
+        <field name="name">discord.channel.search</field>
+        <field name="model">discord.channel</field>
+        <field name="arch" type="xml">
+            <search string="Discord Channel">
+                <field name="name" string="Name" filter_domain="['|', '|', ('name', 'ilike', self),('mention', 'ilike', self), ('discord_id', 'ilike', self)]"/>
+                <field name="guild_id"/>
+                <field name="category_id"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="guild" string="Guild" domain="[]" context="{'group_by':'guild_id'}"/>
+                    <filter name="category" string="Category" domain="[]" context="{'group_by':'category_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="discord_channel_action" model="ir.actions.act_window">
+        <field name="name">Discord Channel</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">discord.channel</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="discord_channel_tree_view"/>
+        <field name="search_view_id" ref="discord_channel_search_view"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Sync guild to get channels
+            </p><p>
+                Once the channels are created, you can use channels with other modules.
+            </p>
+        </field>
+    </record>
+
+    <record id="discord_channel_category_tree_view" model="ir.ui.view">
+        <field name="name">discord.channel.category.tree</field>
+        <field name="model">discord.channel.category</field>
+        <field name="arch" type="xml">
+            <tree string="Channel Categories" create="false" edit="false" delete="false">
+                <field name="active" invisible="1"/>
+                <field name="name"/>
+                <field name="position"/>
+                <field name="discord_id"/>
+                <field name="guild_id"/>
+                <field name="create_date" string="Date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="discord_channel_category_form_view" model="ir.ui.view">
+        <field name="name">discord.channel.category.form</field>
+        <field name="model">discord.channel.category</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <form string="Channel Category" create="false" edit="false">
+                <sheet> 
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <field name="id" invisible="True"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Discord Information" name="discord_info">
+                            <group>
+                                <group name="group_guild_info">
+                                    <field name="guild_id"/>
+                                    <field name="position"/>
+                                    <field name="discord_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Channels" name="text_channels">
+                            <group name="group_channel_info">
+                                <field name="text_channels"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="discord_channel_category_search_view" model="ir.ui.view">
+        <field name="name">discord.channel.category.search</field>
+        <field name="model">discord.channel.category</field>
+        <field name="arch" type="xml">
+            <search string="Discord Category">
+                <field name="name" string="Name" filter_domain="['|', ('name', 'ilike', self), ('discord_id', 'ilike', self)]"/>
+                <field name="guild_id"/>
+                <separator/>
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="guild" string="Guild" domain="[]" context="{'group_by':'guild_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="discord_channel_category_action" model="ir.actions.act_window">
+        <field name="name">Discord Category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">discord.channel.category</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="discord_channel_category_tree_view"/>
+        <field name="search_view_id" ref="discord_channel_category_search_view"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Sync guild to get categories
+            </p><p>
+                Once the categories are created, you can use categories.
+            </p>
+        </field>
+    </record>
+</odoo>

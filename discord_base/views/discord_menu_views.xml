@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Module Menu -->
+    <menuitem id="menu_discord_root" 
+        name="Discord" 
+        groups="group_discord_manager,group_discord_user" 
+        sequence="50"
+        web_icon="discord_base,static/description/icon.png"/>
+
+    <!-- Message -->
+     <menuitem id="menu_message"
+        name="Messages"
+        parent="menu_discord_root"
+        groups="group_discord_user"
+        action="discord_message_action"
+        sequence="3"/>
+
+    <!-- Member -->
+    <menuitem id="menu_member" 
+        name="Members" 
+        parent="menu_discord_root" 
+        groups="group_discord_user" 
+        action="discord_member_action" 
+        sequence="4"/>
+
+    <!-- Channel -->
+    <menuitem id="menu_channel" 
+        name="Channels" 
+        parent="menu_discord_root" 
+        groups="group_discord_user" 
+        action="discord_channel_action" 
+        sequence="6"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_discord_config_settings" 
+        name="Configuration" 
+        parent="menu_discord_root"
+        groups="group_discord_manager" 
+        sequence="100"/>
+    
+    <!-- Guild Config -->
+    <menuitem id="menu_guild_config" 
+        parent="menu_discord_config_settings" 
+        groups="group_discord_manager" 
+        action="discord_guild_action" 
+        sequence="5"/>
+    
+    <!-- Channel Category -->
+    <menuitem id="menu_channel_category_config" 
+        parent="menu_discord_config_settings" 
+        groups="group_discord_manager" 
+        action="discord_channel_category_action" 
+        sequence="7"/>
+</odoo>
