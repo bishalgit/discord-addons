@@ -37,7 +37,7 @@ class DiscordGuild(models.Model):
         try:
             # auto-commit except in testing mode
             auto_commit = not getattr(threading.currentThread(), 'testing', False)
-            res = filtered_guilds.send(auto_commit=auto_commit)
+            res = filtered_guilds.sync(auto_commit=auto_commit)
         except Exception:
             _logger.exception("Failed syncing discord guilds")
         return res
